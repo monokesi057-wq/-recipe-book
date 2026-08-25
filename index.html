@@ -26,13 +26,13 @@ button,input,textarea,select{font:inherit}button{cursor:pointer}.app{max-width:6
 </head>
 <body>
 <div class="app"><main class="card">
-<section id="coverView" class="view active"><div class="cover"><small>MY RECIPE BOOK</small><h1>俺とチャッピーの<br>料理帖</h1><div class="rule"></div><p>うまかった料理だけ、<br>少しずつ増やしていく本。</p><button class="primary" onclick="showLibrary()">本をひらく</button><div class="version">Ver.0.8</div></div></section>
+<section id="coverView" class="view active"><div class="cover"><small>MY RECIPE BOOK</small><h1>俺とチャッピーの<br>料理帖</h1><div class="rule"></div><p>うまかった料理だけ、<br>少しずつ増やしていく本。</p><button class="primary" onclick="showLibrary()">本をひらく</button><div class="version">Ver.0.9</div></div></section>
 
 <section id="libraryView" class="view"><div class="header"><div><div class="kicker">CONTENTS</div><h2>料理を探す</h2></div><div class="header-actions"><button class="secondary" onclick="showManage()">管理</button><button class="secondary" onclick="showCover()">表紙</button></div></div><div class="bigcats" id="bigcats"></div></section>
 
 <section id="categoryView" class="view"><div class="header"><div><div class="kicker" id="categoryKicker"></div><h2 id="categoryTitle"></h2></div><button class="secondary" onclick="showLibrary()">目次</button></div><div class="subcats" id="subcats"></div><div class="recipe-list" id="recipeList"></div></section>
 
-<section id="recipeView" class="view"><button class="back" onclick="backToCategory()">← 戻る</button><div class="kicker" id="recipeKicker"></div><div class="recipe-title" id="recipeTitle"></div><div class="meta" id="recipeMeta"></div><div class="photo" id="recipePhoto">🍽️</div><div class="recipe-section"><h3>材料</h3><ul id="ingredientsList"></ul></div><div class="recipe-section"><h3>作り方</h3><ol id="stepsList"></ol></div><div class="note" id="recipeNote"></div><div class="recipe-actions"><button class="secondary" onclick="editCurrentRecipe()">編集</button><button class="danger" onclick="deleteCurrentRecipe()">削除</button></div></section>
+<section id="recipeView" class="view"><button class="back" onclick="backToCategory()">← 戻る</button><div class="kicker" id="recipeKicker"></div><div class="recipe-title" id="recipeTitle"></div><div class="meta" id="recipeMeta"></div><div class="photo" id="recipePhoto">🍽️</div><div class="page-counter" id="pageCounter"></div><div class="swipe-hint">← 前のレシピ　　スワイプ　　次のレシピ →</div><div class="recipe-section"><h3>材料</h3><ul id="ingredientsList"></ul></div><div class="recipe-section"><h3>作り方</h3><ol id="stepsList"></ol></div><div class="note" id="recipeNote"></div><div class="recipe-actions"><button class="secondary" onclick="editCurrentRecipe()">編集</button><button class="danger" onclick="deleteCurrentRecipe()">削除</button></div></section>
 
 <section id="addView" class="view"><div class="header"><div><div class="kicker" id="formKicker">NEW RECIPE</div><h2 id="formTitle">レシピ追加</h2></div><button class="secondary" onclick="cancelForm()">閉じる</button></div><div class="form-grid"><div class="manage-card"><strong>チャッピーから一発取り込み</strong><p>「料理帖用に出して」で出た専用データを丸ごと貼り付け。</p><textarea id="chappyImportInput" placeholder="ここに丸ごと貼り付け"></textarea><div class="manage-actions"><button type="button" class="primary" onclick="importFromChappy()">読み込む</button></div></div>
 <label>料理名<input id="nameInput" type="text" placeholder="例：マゴチの昆布締め"></label>
@@ -88,7 +88,7 @@ function showLibrary(){renderLibrary();view("libraryView")}
 function renderLibrary(){const w=document.getElementById("bigcats");w.innerHTML="";MAIN.forEach(c=>{const count=recipes.filter(r=>r.main===c.name).length,b=document.createElement("button");b.className="bigcat";b.innerHTML=`<span class="emoji">${c.emoji}</span><strong>${c.name}</strong><small>${count} recipes</small>`;b.onclick=()=>showCategory(c.name);w.appendChild(b)})}
 function showCategory(main){currentMain=main;currentType="すべて";renderCategory();view("categoryView")}
 function renderCategory(){document.getElementById("categoryTitle").textContent=currentMain;document.getElementById("categoryKicker").textContent=`CATEGORY / ${currentMain}`;const used=["すべて",...TYPES.filter(t=>recipes.some(r=>r.main===currentMain&&r.types.includes(t)))],sub=document.getElementById("subcats");sub.innerHTML="";used.forEach(t=>{const b=document.createElement("button");b.className="subcat"+(t===currentType?" active":"");b.textContent=t;b.onclick=()=>{currentType=t;renderCategory()};sub.appendChild(b)});const list=document.getElementById("recipeList");list.innerHTML="";const f=recipes.filter(r=>r.main===currentMain&&(currentType==="すべて"||r.types.includes(currentType)));if(!f.length){list.innerHTML='<div class="empty">まだレシピがありません。<br>右下の＋から追加できます。</div>';return}f.forEach(r=>{const b=document.createElement("button");b.className="recipe-item";b.innerHTML=`<strong>${esc(r.name)}</strong><small>${esc(r.types.join(" / "))}</small>`;b.onclick=()=>showRecipe(r.id);list.appendChild(b)})}
-function showRecipe(id){const r=recipes.find(x=>x.id===id);if(!r)return;currentRecipeId=id;currentMain=r.main;document.getElementById("recipeKicker").textContent=`${r.main} ＞ ${r.types.join("・")}`;document.getElementById("recipeTitle").textContent=r.name;document.getElementById("recipeMeta").textContent=r.types.join(" × ");fill("ingredientsList",r.ingredients);fill("stepsList",r.steps);document.getElementById("recipeNote").innerHTML=`<strong>チャッピーメモ</strong><br>${esc(r.note||"メモなし")}`;view("recipeView");renderRecipePhoto(id)}
+function showRecipe(id){const r=recipes.find(x=>x.id===id);if(!r)return;currentRecipeId=id;currentMain=r.main;const pageIndex=recipes.findIndex(x=>x.id===id);document.getElementById("pageCounter").textContent=`${pageIndex+1} / ${recipes.length}`;document.getElementById("recipeKicker").textContent=`${r.main} ＞ ${r.types.join("・")}`;document.getElementById("recipeTitle").textContent=r.name;document.getElementById("recipeMeta").textContent=r.types.join(" × ");fill("ingredientsList",r.ingredients);fill("stepsList",r.steps);document.getElementById("recipeNote").innerHTML=`<strong>チャッピーメモ</strong><br>${esc(r.note||"メモなし")}`;view("recipeView");renderRecipePhoto(id)}
 function fill(id,items){const el=document.getElementById(id);el.innerHTML="";items.forEach(x=>{const li=document.createElement("li");li.textContent=x;el.appendChild(li)})}
 function backToCategory(){renderCategory();view("categoryView")}
 function renderTypeChecks(selected=[]){const w=document.getElementById("typeChecks");w.innerHTML="";TYPES.forEach(t=>{const l=document.createElement("label");l.className="typecheck";l.innerHTML=`<input type="checkbox" value="${t}" ${selected.includes(t)?"checked":""}><span>${t}</span>`;w.appendChild(l)})}
@@ -103,10 +103,31 @@ async function deleteCurrentRecipe(){const r=recipes.find(x=>x.id===currentRecip
 function showManage(){document.getElementById("recipeCountText").textContent=`${recipes.length}件`;view("manageView")}
 function blobToDataURL(blob){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.readAsDataURL(blob)})}
 function dataURLToBlob(dataURL){const p=dataURL.split(","),m=(p[0].match(/:(.*?);/)||[])[1]||"image/jpeg",bin=atob(p[1]),a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new Blob([a],{type:m})}
-async function exportBackup(){try{const photos={};for(const r of recipes){const b=await photoGet(r.id);if(b)photos[r.id]=await blobToDataURL(b)}const payload={app:"俺とチャッピーの料理帖",version:"0.8",exportedAt:new Date().toISOString(),recipes,photos};const blob=new Blob([JSON.stringify(payload)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a"),d=new Date(),name=`recipe-book-backup-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}.json`;a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("写真込みでバックアップしました")}catch(_){alert("バックアップの作成に失敗しました。")}}
+async function exportBackup(){try{const photos={};for(const r of recipes){const b=await photoGet(r.id);if(b)photos[r.id]=await blobToDataURL(b)}const payload={app:"俺とチャッピーの料理帖",version:"0.9",exportedAt:new Date().toISOString(),recipes,photos};const blob=new Blob([JSON.stringify(payload)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a"),d=new Date(),name=`recipe-book-backup-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}.json`;a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("写真込みでバックアップしました")}catch(_){alert("バックアップの作成に失敗しました。")}}
 function restoreBackup(e){const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=async()=>{try{const data=JSON.parse(reader.result),incoming=Array.isArray(data)?data:data.recipes;if(!Array.isArray(incoming)||!incoming.every(r=>r&&typeof r.name==="string"&&Array.isArray(r.types)&&Array.isArray(r.ingredients)&&Array.isArray(r.steps)))throw 0;if(!confirm(`バックアップの${incoming.length}件で現在のレシピを置き換える？`)){e.target.value="";return}recipes=incoming;persist();if(data.photos&&typeof data.photos==="object"){for(const [id,d] of Object.entries(data.photos)){if(typeof d==="string"&&d.startsWith("data:"))await photoPut(id,dataURLToBlob(d))}}document.getElementById("recipeCountText").textContent=`${recipes.length}件`;renderLibrary();toast("写真込みで復元しました")}catch(_){alert("料理帖のバックアップとして読み込めませんでした。")}e.target.value=""};reader.readAsText(file)}
 function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1600)}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+
+let swipeStartX=0,swipeStartY=0,swipeTracking=false;
+const recipeViewEl=document.getElementById("recipeView");
+recipeViewEl.addEventListener("touchstart",e=>{
+  if(!document.getElementById("recipeView").classList.contains("active"))return;
+  const t=e.changedTouches[0];swipeStartX=t.clientX;swipeStartY=t.clientY;swipeTracking=true;
+},{passive:true});
+recipeViewEl.addEventListener("touchend",e=>{
+  if(!swipeTracking)return;swipeTracking=false;
+  const t=e.changedTouches[0],dx=t.clientX-swipeStartX,dy=t.clientY-swipeStartY;
+  if(Math.abs(dx)<55||Math.abs(dx)<Math.abs(dy)*1.25)return;
+  const i=recipes.findIndex(r=>r.id===currentRecipeId);
+  if(i<0||!recipes.length)return;
+  if(dx<0){
+    const next=(i+1)%recipes.length;
+    showRecipe(recipes[next].id);
+  }else{
+    const prev=(i-1+recipes.length)%recipes.length;
+    showRecipe(recipes[prev].id);
+  }
+});
 renderLibrary();renderTypeChecks();
 </script>
 </body></html>
