@@ -7,370 +7,85 @@
 <meta name="theme-color" content="#eee8de">
 <title>俺とチャッピーの料理帖</title>
 <style>
-:root{
-  --bg:#eee8de; --paper:#fffdf8; --ink:#29251f;
-  --muted:#7b7166; --line:#e7ded2; --accent:#866b4f;
-  --soft:#f6f1e9;
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
-font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.app{max-width:600px;margin:0 auto;min-height:100svh;padding:16px 16px 90px}
-.card{
-  background:var(--paper);border-radius:24px;box-shadow:0 16px 42px rgba(50,39,27,.14);
-  min-height:calc(100svh - 32px);padding:26px 24px;position:relative
-}
-.view{display:none}
-.view.active{display:block}
-.cover{display:flex;min-height:calc(100svh - 84px);flex-direction:column;justify-content:center;align-items:center;text-align:center}
-.cover small{letter-spacing:.14em;color:var(--muted);margin-bottom:20px}
-.cover h1{font-family:serif;font-size:clamp(34px,8vw,52px);line-height:1.2;margin:0}
-.rule{width:52px;height:2px;background:var(--accent);margin:24px 0}
-.cover p{color:var(--muted);line-height:1.8}
-.primary{
-  border:0;background:var(--ink);color:white;border-radius:999px;
-  padding:14px 22px;font-weight:700
-}
-.secondary{
-  border:1px solid var(--line);background:white;color:var(--ink);border-radius:999px;
-  padding:10px 14px
-}
-.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
-.header h2{font-family:serif;margin:0;font-size:31px}
-.back{border:0;background:none;padding:0;color:var(--muted)}
-.kicker{font-size:12px;letter-spacing:.12em;color:var(--muted);margin-bottom:6px}
-.bigcats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.bigcat{
-  background:var(--soft);border:1px solid var(--line);border-radius:18px;
-  padding:18px;text-align:left
-}
-.bigcat .emoji{font-size:30px}
-.bigcat strong{display:block;font-family:serif;font-size:23px;margin-top:8px}
-.bigcat small{color:var(--muted)}
-.subcats{display:flex;gap:8px;overflow-x:auto;padding:2px 0 14px;margin-bottom:4px}
-.subcat{
-  flex:0 0 auto;border:1px solid var(--line);background:white;border-radius:999px;padding:9px 13px
-}
-.subcat.active{background:var(--ink);color:white;border-color:var(--ink)}
-.recipe-list{display:grid;gap:10px}
-.recipe-item{
-  border:1px solid var(--line);background:white;border-radius:16px;padding:15px;text-align:left
-}
-.recipe-item strong{display:block;font-size:17px;margin-bottom:5px}
-.recipe-item small{color:var(--muted)}
-.empty{padding:32px 8px;text-align:center;color:var(--muted);line-height:1.7}
-.recipe-title{font-family:serif;font-size:32px;line-height:1.25;margin:8px 0 6px}
-.meta{font-size:13px;color:var(--muted);margin-bottom:18px}
-.photo{
-  height:170px;border-radius:18px;display:flex;align-items:center;justify-content:center;
-  margin:18px 0 24px;background:linear-gradient(135deg,#ded4c7,#f5efe7);
-  border:1px solid var(--line);font-size:46px
-}
-.recipe-section{margin:22px 0}
-.recipe-section h3{font-size:15px;letter-spacing:.06em;margin:0 0 10px;color:#4e453b}
-ul,ol{padding-left:1.25em;line-height:1.8}
-.note{margin-top:24px;padding:16px 17px;border-radius:16px;background:var(--soft);line-height:1.7;border-left:4px solid var(--accent)}
-.form-grid{display:grid;gap:16px}
-label{font-weight:700;font-size:14px;display:block}
-input[type="text"],select,textarea{
-  width:100%;margin-top:7px;border:1px solid var(--line);background:white;border-radius:14px;
-  padding:12px 13px;color:var(--ink)
-}
-textarea{min-height:110px;resize:vertical}
-.types{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
-.typecheck input{display:none}
-.typecheck span{
-  display:inline-block;border:1px solid var(--line);background:white;border-radius:999px;padding:9px 12px;font-weight:500
-}
-.typecheck input:checked + span{background:var(--ink);color:white;border-color:var(--ink)}
-.form-actions{display:flex;gap:10px;margin-top:6px}
-.form-actions button{flex:1}
-.fab{
-  position:fixed;right:max(22px,calc((100vw - 600px)/2 + 22px));bottom:24px;
-  width:58px;height:58px;border-radius:50%;border:0;background:var(--ink);color:white;
-  font-size:30px;box-shadow:0 10px 28px rgba(0,0,0,.22);z-index:20
-}
-.toast{
-  position:fixed;left:50%;bottom:94px;transform:translateX(-50%);
-  background:var(--ink);color:white;padding:10px 14px;border-radius:999px;font-size:13px;
-  opacity:0;pointer-events:none;transition:.25s;z-index:30
-}
-.toast.show{opacity:1}
-.smallnote{color:var(--muted);font-size:12px;line-height:1.6}
+:root{--bg:#eee8de;--paper:#fffdf8;--ink:#29251f;--muted:#7b7166;--line:#e7ded2;--soft:#f6f1e9;--danger:#9b3f37}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}.app{max-width:600px;margin:auto;min-height:100svh;padding:16px 16px 96px}
+.card{background:var(--paper);border-radius:24px;box-shadow:0 16px 42px rgba(50,39,27,.14);min-height:calc(100svh - 32px);padding:26px 24px}.view{display:none}.view.active{display:block}
+.cover{display:flex;min-height:calc(100svh - 84px);flex-direction:column;justify-content:center;align-items:center;text-align:center}.cover small{letter-spacing:.14em;color:var(--muted);margin-bottom:20px}.cover h1{font-family:serif;font-size:clamp(34px,8vw,52px);line-height:1.2;margin:0}.rule{width:52px;height:2px;background:#866b4f;margin:24px 0}.cover p{color:var(--muted);line-height:1.8}
+.primary{border:0;background:var(--ink);color:white;border-radius:999px;padding:14px 22px;font-weight:700}.secondary{border:1px solid var(--line);background:white;color:var(--ink);border-radius:999px;padding:10px 14px}.danger{border:1px solid #d9b2ae;background:white;color:var(--danger);border-radius:999px;padding:10px 14px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.header h2{font-family:serif;margin:0;font-size:31px}.header-actions{display:flex;gap:8px}.back{border:0;background:none;padding:0;color:var(--muted)}.kicker{font-size:12px;letter-spacing:.12em;color:var(--muted);margin-bottom:6px}
+.bigcats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.bigcat{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:left}.bigcat .emoji{font-size:30px}.bigcat strong{display:block;font-family:serif;font-size:23px;margin-top:8px}.bigcat small{color:var(--muted)}
+.subcats{display:flex;gap:8px;overflow-x:auto;padding:2px 0 14px}.subcat{flex:0 0 auto;border:1px solid var(--line);background:white;border-radius:999px;padding:9px 13px}.subcat.active{background:var(--ink);color:white}
+.recipe-list{display:grid;gap:10px}.recipe-item{border:1px solid var(--line);background:white;border-radius:16px;padding:15px;text-align:left}.recipe-item strong{display:block;font-size:17px;margin-bottom:5px}.recipe-item small{color:var(--muted)}
+.empty{padding:32px 8px;text-align:center;color:var(--muted);line-height:1.7}.recipe-title{font-family:serif;font-size:32px;line-height:1.25;margin:8px 0 6px}.meta{font-size:13px;color:var(--muted);margin-bottom:18px}.photo{height:170px;border-radius:18px;display:flex;align-items:center;justify-content:center;margin:18px 0 24px;background:linear-gradient(135deg,#ded4c7,#f5efe7);border:1px solid var(--line);font-size:46px}
+.recipe-section{margin:22px 0}.recipe-section h3{font-size:15px;letter-spacing:.06em;margin:0 0 10px}ul,ol{padding-left:1.25em;line-height:1.8}.note{margin-top:24px;padding:16px;border-radius:16px;background:var(--soft);line-height:1.7;border-left:4px solid #866b4f}.recipe-actions,.form-actions,.manage-actions{display:flex;gap:10px;flex-wrap:wrap}.recipe-actions{margin-top:24px}.recipe-actions button,.form-actions button{flex:1}
+.form-grid{display:grid;gap:16px}label{font-weight:700;font-size:14px;display:block}input[type="text"],select,textarea{width:100%;margin-top:7px;border:1px solid var(--line);background:white;border-radius:14px;padding:12px 13px}textarea{min-height:110px;resize:vertical}.types{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}.typecheck input{display:none}.typecheck span{display:inline-block;border:1px solid var(--line);background:white;border-radius:999px;padding:9px 12px;font-weight:500}.typecheck input:checked+span{background:var(--ink);color:white}.smallnote{color:var(--muted);font-size:12px}
+.fab{position:fixed;right:max(22px,calc((100vw - 600px)/2 + 22px));bottom:24px;width:58px;height:58px;border-radius:50%;border:0;background:var(--ink);color:white;font-size:30px;box-shadow:0 10px 28px rgba(0,0,0,.22)}.toast{position:fixed;left:50%;bottom:94px;transform:translateX(-50%);background:var(--ink);color:white;padding:10px 14px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:.25s}.toast.show{opacity:1}
+.manage-list{display:grid;gap:12px}.manage-card{background:var(--soft);border:1px solid var(--line);border-radius:18px;padding:16px}.manage-card strong{display:block;margin-bottom:6px}.manage-card p{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.6}.file-label{border:1px solid var(--line);background:white;border-radius:999px;padding:11px 14px;font-weight:700;font-size:14px;display:inline-block}.file-label input{display:none}.version{text-align:center;color:var(--muted);font-size:11px;margin-top:24px}
 </style>
 </head>
 <body>
-<div class="app">
-  <main class="card">
+<div class="app"><main class="card">
+<section id="coverView" class="view active"><div class="cover"><small>MY RECIPE BOOK</small><h1>俺とチャッピーの<br>料理帖</h1><div class="rule"></div><p>うまかった料理だけ、<br>少しずつ増やしていく本。</p><button class="primary" onclick="showLibrary()">本をひらく</button><div class="version">Ver.0.6</div></div></section>
 
-    <section id="coverView" class="view active">
-      <div class="cover">
-        <small>MY RECIPE BOOK</small>
-        <h1>俺とチャッピーの<br>料理帖</h1>
-        <div class="rule"></div>
-        <p>うまかった料理だけ、<br>少しずつ増やしていく本。</p>
-        <button class="primary" onclick="showLibrary()">本をひらく</button>
-      </div>
-    </section>
+<section id="libraryView" class="view"><div class="header"><div><div class="kicker">CONTENTS</div><h2>料理を探す</h2></div><div class="header-actions"><button class="secondary" onclick="showManage()">管理</button><button class="secondary" onclick="showCover()">表紙</button></div></div><div class="bigcats" id="bigcats"></div></section>
 
-    <section id="libraryView" class="view">
-      <div class="header">
-        <div>
-          <div class="kicker">CONTENTS</div>
-          <h2>料理を探す</h2>
-        </div>
-        <button class="secondary" onclick="showCover()">表紙</button>
-      </div>
-      <div class="bigcats" id="bigcats"></div>
-    </section>
+<section id="categoryView" class="view"><div class="header"><div><div class="kicker" id="categoryKicker"></div><h2 id="categoryTitle"></h2></div><button class="secondary" onclick="showLibrary()">目次</button></div><div class="subcats" id="subcats"></div><div class="recipe-list" id="recipeList"></div></section>
 
-    <section id="categoryView" class="view">
-      <div class="header">
-        <div>
-          <div class="kicker" id="categoryKicker">CATEGORY</div>
-          <h2 id="categoryTitle">魚</h2>
-        </div>
-        <button class="secondary" onclick="showLibrary()">目次</button>
-      </div>
-      <div class="subcats" id="subcats"></div>
-      <div class="recipe-list" id="recipeList"></div>
-    </section>
+<section id="recipeView" class="view"><button class="back" onclick="backToCategory()">← 戻る</button><div class="kicker" id="recipeKicker"></div><div class="recipe-title" id="recipeTitle"></div><div class="meta" id="recipeMeta"></div><div class="photo">🍽️</div><div class="recipe-section"><h3>材料</h3><ul id="ingredientsList"></ul></div><div class="recipe-section"><h3>作り方</h3><ol id="stepsList"></ol></div><div class="note" id="recipeNote"></div><div class="recipe-actions"><button class="secondary" onclick="editCurrentRecipe()">編集</button><button class="danger" onclick="deleteCurrentRecipe()">削除</button></div></section>
 
-    <section id="recipeView" class="view">
-      <button class="back" onclick="backToCategory()">← 戻る</button>
-      <div class="kicker" id="recipeKicker"></div>
-      <div class="recipe-title" id="recipeTitle"></div>
-      <div class="meta" id="recipeMeta"></div>
-      <div class="photo">🍽️</div>
-      <div class="recipe-section">
-        <h3>材料</h3>
-        <ul id="ingredientsList"></ul>
-      </div>
-      <div class="recipe-section">
-        <h3>作り方</h3>
-        <ol id="stepsList"></ol>
-      </div>
-      <div class="note" id="recipeNote"></div>
-    </section>
+<section id="addView" class="view"><div class="header"><div><div class="kicker" id="formKicker">NEW RECIPE</div><h2 id="formTitle">レシピ追加</h2></div><button class="secondary" onclick="cancelForm()">閉じる</button></div><div class="form-grid">
+<label>料理名<input id="nameInput" type="text" placeholder="例：マゴチの昆布締め"></label>
+<label>大分類<select id="mainInput"><option>魚</option><option>肉</option><option>野菜</option><option>その他</option></select></label>
+<label>料理タイプ <span class="smallnote">（複数選択OK）</span><div class="types" id="typeChecks"></div></label>
+<label>材料 <span class="smallnote">（1行に1つ）</span><textarea id="ingredientsInput"></textarea></label>
+<label>作り方 <span class="smallnote">（1行に1工程）</span><textarea id="stepsInput"></textarea></label>
+<label>チャッピーメモ<textarea id="noteInput"></textarea></label>
+<div class="form-actions"><button class="secondary" onclick="cancelForm()">キャンセル</button><button class="primary" onclick="saveRecipe()">保存する</button></div></div></section>
 
-    <section id="addView" class="view">
-      <div class="header">
-        <div>
-          <div class="kicker">NEW RECIPE</div>
-          <h2>レシピ追加</h2>
-        </div>
-        <button class="secondary" onclick="cancelAdd()">閉じる</button>
-      </div>
+<section id="manageView" class="view"><div class="header"><div><div class="kicker">DATA</div><h2>料理帖の管理</h2></div><button class="secondary" onclick="showLibrary()">戻る</button></div><div class="manage-list">
+<div class="manage-card"><strong>バックアップ</strong><p>今入っている全レシピを1つのファイルとして保存します。iCloud Driveなどに置いておくと安心。</p><div class="manage-actions"><button class="primary" onclick="exportBackup()">バックアップを書き出す</button></div></div>
+<div class="manage-card"><strong>バックアップから復元</strong><p>以前書き出したファイルを読み込みます。現在のレシピはバックアップ内容に置き換わります。</p><div class="manage-actions"><label class="file-label">復元ファイルを選ぶ<input id="restoreInput" type="file" accept=".json,application/json" onchange="restoreBackup(event)"></label></div></div>
+<div class="manage-card"><strong>登録数</strong><p id="recipeCountText">0件</p></div>
+</div></section>
 
-      <div class="form-grid">
-        <label>料理名
-          <input id="nameInput" type="text" placeholder="例：マゴチの昆布締め">
-        </label>
-
-        <label>大分類
-          <select id="mainInput">
-            <option value="魚">魚</option>
-            <option value="肉">肉</option>
-            <option value="野菜">野菜</option>
-            <option value="その他">その他</option>
-          </select>
-        </label>
-
-        <label>料理タイプ <span class="smallnote">（複数選択OK）</span>
-          <div class="types" id="typeChecks"></div>
-        </label>
-
-        <label>材料 <span class="smallnote">（1行に1つ）</span>
-          <textarea id="ingredientsInput" placeholder="マゴチ 1柵&#10;昆布 適量&#10;塩 少々"></textarea>
-        </label>
-
-        <label>作り方 <span class="smallnote">（1行に1工程）</span>
-          <textarea id="stepsInput" placeholder="魚に薄く塩を振る&#10;昆布で挟む&#10;冷蔵庫で休ませる"></textarea>
-        </label>
-
-        <label>チャッピーメモ
-          <textarea id="noteInput" placeholder="味のポイントや次回の改善点など"></textarea>
-        </label>
-
-        <div class="form-actions">
-          <button class="secondary" onclick="cancelAdd()">キャンセル</button>
-          <button class="primary" onclick="saveRecipe()">保存する</button>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <button id="fab" class="fab" onclick="showAdd()" aria-label="レシピを追加">＋</button>
-  <div id="toast" class="toast">保存しました</div>
-</div>
+</main><button id="fab" class="fab" onclick="showAdd()">＋</button><div id="toast" class="toast">保存しました</div></div>
 
 <script>
-const TYPES = ["刺身","小鉢","焼き","揚げ","煮","蒸し","漬け","その他"];
-const MAIN = [
-  {name:"魚", emoji:"🐟"},
-  {name:"肉", emoji:"🥩"},
-  {name:"野菜", emoji:"🥬"},
-  {name:"その他", emoji:"🍳"}
-];
+const STORAGE_KEY="chappyRecipeBook";
+const TYPES=["刺身","小鉢","焼き","揚げ","煮","蒸し","漬け","その他"];
+const MAIN=[{name:"魚",emoji:"🐟"},{name:"肉",emoji:"🥩"},{name:"野菜",emoji:"🥬"},{name:"その他",emoji:"🍳"}];
+const DEFAULT_RECIPES=[
+{id:"tachi-tataki",name:"太刀魚の薬味たっぷり叩き",main:"魚",types:["小鉢","焼き"],ingredients:["太刀魚（塩焼きにしたもの）","小ねぎ・みょうが等の薬味","にんにく醤油","好みで柑橘"],steps:["太刀魚を塩焼きにし、骨を外して身をほぐす。","薬味をたっぷり刻む。","太刀魚と薬味を軽く叩きながら合わせる。","にんにく醤油で味をまとめる。"],note:"脂のある太刀魚に香味をしっかり合わせると、重くならず酒の肴としてかなり強い。"},
+{id:"saba-gari",name:"焼き鯖とガリのさっぱり和え",main:"魚",types:["小鉢","焼き"],ingredients:["鯖","ガリ","醤油 少々","白ごま 適量"],steps:["鯖を香ばしく焼く。","粗熱が取れたら骨を除き、粗めにほぐす。","刻んだガリと和える。","必要なら醤油を少量だけ足し、ごまを散らす。"],note:"ガリの甘酢が鯖の脂を切ってくれる。大葉なしでも成立する、在庫消化にも強い小鉢。"},
+{id:"katsuo-miso",name:"カツオの味噌炙り",main:"魚",types:["刺身","焼き"],ingredients:["カツオ","味噌","酒","みりん"],steps:["味噌を酒・みりんでのばして塗りやすくする。","カツオの表面に薄く塗る。","表面だけを手早く炙る。","すぐに冷やし、食べやすく切る。"],note:"味噌は厚く塗りすぎない。炙った香りとカツオ自体の味が両方残るくらいがちょうどいい。"}];
 
-const DEFAULT_RECIPES = [
-  {
-    id:"tachi-tataki", name:"太刀魚の薬味たっぷり叩き", main:"魚",
-    types:["小鉢","焼き"],
-    ingredients:["太刀魚（塩焼きにしたもの）","小ねぎ・みょうが等の薬味","にんにく醤油","好みで柑橘"],
-    steps:["太刀魚を塩焼きにし、骨を外して身をほぐす。","薬味をたっぷり刻む。","太刀魚と薬味を軽く叩きながら合わせる。","にんにく醤油で味をまとめる。"],
-    note:"脂のある太刀魚に香味をしっかり合わせると、重くならず酒の肴としてかなり強い。"
-  },
-  {
-    id:"saba-gari", name:"焼き鯖とガリのさっぱり和え", main:"魚",
-    types:["小鉢","焼き"],
-    ingredients:["鯖","ガリ","醤油 少々","白ごま 適量"],
-    steps:["鯖を香ばしく焼く。","粗熱が取れたら骨を除き、粗めにほぐす。","刻んだガリと和える。","必要なら醤油を少量だけ足し、ごまを散らす。"],
-    note:"ガリの甘酢が鯖の脂を切ってくれる。大葉なしでも成立する、在庫消化にも強い小鉢。"
-  },
-  {
-    id:"katsuo-miso", name:"カツオの味噌炙り", main:"魚",
-    types:["刺身","焼き"],
-    ingredients:["カツオ","味噌","酒","みりん"],
-    steps:["味噌を酒・みりんでのばして塗りやすくする。","カツオの表面に薄く塗る。","表面だけを手早く炙る。","すぐに冷やし、食べやすく切る。"],
-    note:"味噌は厚く塗りすぎない。炙った香りとカツオ自体の味が両方残るくらいがちょうどいい。"
-  }
-];
-
-let recipes = loadRecipes();
-let currentMain = "魚";
-let currentType = "すべて";
-let previousView = "libraryView";
-
-function loadRecipes(){
-  try{
-    const saved = localStorage.getItem("chappyRecipeBook");
-    return saved ? JSON.parse(saved) : DEFAULT_RECIPES;
-  }catch(e){ return DEFAULT_RECIPES; }
-}
-function persist(){
-  localStorage.setItem("chappyRecipeBook", JSON.stringify(recipes));
-}
-function view(id){
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.getElementById("fab").style.display = id==="addView" ? "none" : "block";
-  window.scrollTo(0,0);
-}
+let recipes=loadRecipes(),currentMain="魚",currentType="すべて",currentRecipeId=null,editingRecipeId=null,previousView="libraryView";
+function cloneDefaults(){return JSON.parse(JSON.stringify(DEFAULT_RECIPES))}
+function loadRecipes(){try{const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):cloneDefaults()}catch(e){return cloneDefaults()}}
+function persist(){localStorage.setItem(STORAGE_KEY,JSON.stringify(recipes))}
+function view(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(id).classList.add("active");document.getElementById("fab").style.display=["addView","manageView"].includes(id)?"none":"block";window.scrollTo(0,0)}
 function showCover(){view("coverView")}
 function showLibrary(){renderLibrary();view("libraryView")}
-function renderLibrary(){
-  const wrap=document.getElementById("bigcats");
-  wrap.innerHTML="";
-  MAIN.forEach(cat=>{
-    const count=recipes.filter(r=>r.main===cat.name).length;
-    const b=document.createElement("button");
-    b.className="bigcat";
-    b.innerHTML=`<span class="emoji">${cat.emoji}</span><strong>${cat.name}</strong><small>${count} recipes</small>`;
-    b.onclick=()=>showCategory(cat.name);
-    wrap.appendChild(b);
-  });
-}
-function showCategory(main){
-  currentMain=main; currentType="すべて";
-  renderCategory(); view("categoryView");
-}
-function renderCategory(){
-  document.getElementById("categoryTitle").textContent=currentMain;
-  document.getElementById("categoryKicker").textContent=`CATEGORY / ${currentMain}`;
-  const used=["すべて", ...TYPES.filter(t=>recipes.some(r=>r.main===currentMain && r.types.includes(t)))];
-  const sub=document.getElementById("subcats");
-  sub.innerHTML="";
-  used.forEach(t=>{
-    const b=document.createElement("button");
-    b.className="subcat"+(t===currentType?" active":"");
-    b.textContent=t;
-    b.onclick=()=>{currentType=t;renderCategory()};
-    sub.appendChild(b);
-  });
-  const list=document.getElementById("recipeList");
-  list.innerHTML="";
-  const filtered=recipes.filter(r=>r.main===currentMain && (currentType==="すべて" || r.types.includes(currentType)));
-  if(!filtered.length){
-    list.innerHTML='<div class="empty">まだレシピがありません。<br>右下の＋から追加できます。</div>';
-    return;
-  }
-  filtered.forEach(r=>{
-    const b=document.createElement("button");
-    b.className="recipe-item";
-    b.innerHTML=`<strong>${escapeHtml(r.name)}</strong><small>${escapeHtml(r.types.join(" / "))}</small>`;
-    b.onclick=()=>showRecipe(r.id);
-    list.appendChild(b);
-  });
-}
-function showRecipe(id){
-  const r=recipes.find(x=>x.id===id);
-  if(!r)return;
-  previousView="categoryView";
-  document.getElementById("recipeKicker").textContent=`${r.main} ＞ ${r.types.join("・")}`;
-  document.getElementById("recipeTitle").textContent=r.name;
-  document.getElementById("recipeMeta").textContent=r.types.join(" × ");
-  fillList("ingredientsList",r.ingredients);
-  fillList("stepsList",r.steps);
-  document.getElementById("recipeNote").innerHTML=`<strong>チャッピーメモ</strong><br>${escapeHtml(r.note || "メモなし")}`;
-  view("recipeView");
-}
-function fillList(id,items){
-  const el=document.getElementById(id); el.innerHTML="";
-  items.forEach(x=>{const li=document.createElement("li");li.textContent=x;el.appendChild(li)});
-}
+function renderLibrary(){const w=document.getElementById("bigcats");w.innerHTML="";MAIN.forEach(c=>{const count=recipes.filter(r=>r.main===c.name).length,b=document.createElement("button");b.className="bigcat";b.innerHTML=`<span class="emoji">${c.emoji}</span><strong>${c.name}</strong><small>${count} recipes</small>`;b.onclick=()=>showCategory(c.name);w.appendChild(b)})}
+function showCategory(main){currentMain=main;currentType="すべて";renderCategory();view("categoryView")}
+function renderCategory(){document.getElementById("categoryTitle").textContent=currentMain;document.getElementById("categoryKicker").textContent=`CATEGORY / ${currentMain}`;const used=["すべて",...TYPES.filter(t=>recipes.some(r=>r.main===currentMain&&r.types.includes(t)))],sub=document.getElementById("subcats");sub.innerHTML="";used.forEach(t=>{const b=document.createElement("button");b.className="subcat"+(t===currentType?" active":"");b.textContent=t;b.onclick=()=>{currentType=t;renderCategory()};sub.appendChild(b)});const list=document.getElementById("recipeList");list.innerHTML="";const f=recipes.filter(r=>r.main===currentMain&&(currentType==="すべて"||r.types.includes(currentType)));if(!f.length){list.innerHTML='<div class="empty">まだレシピがありません。<br>右下の＋から追加できます。</div>';return}f.forEach(r=>{const b=document.createElement("button");b.className="recipe-item";b.innerHTML=`<strong>${esc(r.name)}</strong><small>${esc(r.types.join(" / "))}</small>`;b.onclick=()=>showRecipe(r.id);list.appendChild(b)})}
+function showRecipe(id){const r=recipes.find(x=>x.id===id);if(!r)return;currentRecipeId=id;currentMain=r.main;document.getElementById("recipeKicker").textContent=`${r.main} ＞ ${r.types.join("・")}`;document.getElementById("recipeTitle").textContent=r.name;document.getElementById("recipeMeta").textContent=r.types.join(" × ");fill("ingredientsList",r.ingredients);fill("stepsList",r.steps);document.getElementById("recipeNote").innerHTML=`<strong>チャッピーメモ</strong><br>${esc(r.note||"メモなし")}`;view("recipeView")}
+function fill(id,items){const el=document.getElementById(id);el.innerHTML="";items.forEach(x=>{const li=document.createElement("li");li.textContent=x;el.appendChild(li)})}
 function backToCategory(){renderCategory();view("categoryView")}
-function showAdd(){
-  previousView=document.querySelector(".view.active")?.id || "libraryView";
-  clearForm(); renderTypeChecks(); view("addView");
-}
-function cancelAdd(){view(previousView)}
-function renderTypeChecks(){
-  const wrap=document.getElementById("typeChecks");wrap.innerHTML="";
-  TYPES.forEach(t=>{
-    const l=document.createElement("label");l.className="typecheck";
-    l.innerHTML=`<input type="checkbox" value="${t}"><span>${t}</span>`;
-    wrap.appendChild(l);
-  });
-}
-function clearForm(){
-  ["nameInput","ingredientsInput","stepsInput","noteInput"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("mainInput").value=currentMain || "魚";
-}
-function saveRecipe(){
-  const name=document.getElementById("nameInput").value.trim();
-  const main=document.getElementById("mainInput").value;
-  const types=[...document.querySelectorAll("#typeChecks input:checked")].map(x=>x.value);
-  const ingredients=lines("ingredientsInput");
-  const steps=lines("stepsInput");
-  const note=document.getElementById("noteInput").value.trim();
-  if(!name){alert("料理名を入れてね");return}
-  if(!types.length){alert("料理タイプを1つ以上選んでね");return}
-  const recipe={
-    id:"r-"+Date.now(), name, main, types,
-    ingredients:ingredients.length?ingredients:["未入力"],
-    steps:steps.length?steps:["未入力"], note
-  };
-  recipes.push(recipe); persist();
-  currentMain=main; currentType="すべて";
-  showToast();
-  renderCategory(); view("categoryView");
-}
-function lines(id){
-  return document.getElementById(id).value.split(/\n+/).map(x=>x.trim()).filter(Boolean);
-}
-function showToast(){
-  const t=document.getElementById("toast");t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),1500);
-}
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-}
-renderLibrary();
-renderTypeChecks();
+function renderTypeChecks(selected=[]){const w=document.getElementById("typeChecks");w.innerHTML="";TYPES.forEach(t=>{const l=document.createElement("label");l.className="typecheck";l.innerHTML=`<input type="checkbox" value="${t}" ${selected.includes(t)?"checked":""}><span>${t}</span>`;w.appendChild(l)})}
+function clearForm(){["nameInput","ingredientsInput","stepsInput","noteInput"].forEach(id=>document.getElementById(id).value="");document.getElementById("mainInput").value=currentMain||"魚"}
+function showAdd(){previousView=document.querySelector(".view.active")?.id||"libraryView";editingRecipeId=null;document.getElementById("formKicker").textContent="NEW RECIPE";document.getElementById("formTitle").textContent="レシピ追加";clearForm();renderTypeChecks([]);view("addView")}
+function editCurrentRecipe(){const r=recipes.find(x=>x.id===currentRecipeId);if(!r)return;previousView="recipeView";editingRecipeId=r.id;document.getElementById("formKicker").textContent="EDIT RECIPE";document.getElementById("formTitle").textContent="レシピ編集";document.getElementById("nameInput").value=r.name;document.getElementById("mainInput").value=r.main;document.getElementById("ingredientsInput").value=r.ingredients.join("\n");document.getElementById("stepsInput").value=r.steps.join("\n");document.getElementById("noteInput").value=r.note||"";renderTypeChecks(r.types);view("addView")}
+function cancelForm(){if(previousView==="recipeView"&&currentRecipeId)showRecipe(currentRecipeId);else view(previousView)}
+function lines(id){return document.getElementById(id).value.split(/\n+/).map(x=>x.trim()).filter(Boolean)}
+function saveRecipe(){const name=document.getElementById("nameInput").value.trim(),main=document.getElementById("mainInput").value,types=[...document.querySelectorAll("#typeChecks input:checked")].map(x=>x.value),ingredients=lines("ingredientsInput"),steps=lines("stepsInput"),note=document.getElementById("noteInput").value.trim();if(!name){alert("料理名を入れてね");return}if(!types.length){alert("料理タイプを1つ以上選んでね");return}const wasEdit=!!editingRecipeId;if(wasEdit){const i=recipes.findIndex(r=>r.id===editingRecipeId);recipes[i]={...recipes[i],name,main,types,ingredients:ingredients.length?ingredients:["未入力"],steps:steps.length?steps:["未入力"],note};currentRecipeId=editingRecipeId}else{const r={id:"r-"+Date.now(),name,main,types,ingredients:ingredients.length?ingredients:["未入力"],steps:steps.length?steps:["未入力"],note};recipes.push(r);currentRecipeId=r.id}persist();currentMain=main;currentType="すべて";editingRecipeId=null;toast(wasEdit?"更新しました":"保存しました");showRecipe(currentRecipeId)}
+function deleteCurrentRecipe(){const r=recipes.find(x=>x.id===currentRecipeId);if(!r)return;if(!confirm(`「${r.name}」を削除する？\nこの操作は取り消せません。`))return;recipes=recipes.filter(x=>x.id!==currentRecipeId);persist();currentRecipeId=null;currentType="すべて";toast("削除しました");renderCategory();view("categoryView")}
+function showManage(){document.getElementById("recipeCountText").textContent=`${recipes.length}件`;view("manageView")}
+function exportBackup(){const payload={app:"俺とチャッピーの料理帖",version:"0.6",exportedAt:new Date().toISOString(),recipes};const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a"),d=new Date(),name=`recipe-book-backup-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}.json`;a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("バックアップを書き出しました")}
+function restoreBackup(e){const file=e.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result),incoming=Array.isArray(data)?data:data.recipes;if(!Array.isArray(incoming)||!incoming.every(r=>r&&typeof r.name==="string"&&Array.isArray(r.types)&&Array.isArray(r.ingredients)&&Array.isArray(r.steps)))throw 0;if(!confirm(`バックアップの${incoming.length}件で現在のレシピを置き換える？`)){e.target.value="";return}recipes=incoming;persist();document.getElementById("recipeCountText").textContent=`${recipes.length}件`;renderLibrary();toast("復元しました")}catch(_){alert("料理帖のバックアップとして読み込めませんでした。")}e.target.value=""};reader.readAsText(file)}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1600)}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+renderLibrary();renderTypeChecks();
 </script>
-</body>
-</html>
+</body></html>
